@@ -1,49 +1,32 @@
 # bq40z50 Linux 驱动
 
-本仓库包含适用于 Linux 内核的 bq40z50 电池管理 IC 驱动代码。
+> **注意**：由于 Linux 驱动可能稳定性不足，驱动程序的操作方法请参考 [这里](./README-old.md)，可以选择使用这里的python程序。
 
-## 目录结构
-```
-```
-.
-├── bq40z50_fg.c        # 主要的驱动源代码
-├── bq40z50-overlay.dts # 设备树覆盖文件
-├── Makefile            # 编译驱动的 Makefile
-└── test.sh             # 测试脚本
-```
-```
+## 一、使用 Python 程序读取或控制 bq40z50 状态
 
-## 编译和安装
-### 1. 获取 Linux 内核源码
-确保你已经安装了对应的 Linux 内核源码，并在 `Makefile` 中正确设置了 `KDIR` 变量。
+### 1. 将 `bq40z50` 文件夹复制到 `rpicm5`
 
-### 2. 编译驱动
-```sh
-make && sudo cp bq40z50.ko /lib/modules/$(uname -r)/kernel/drivers/power/ && sudo depmod
-```
+### 2. 常用指令示例
+```bash
+# 查看可读取的状态
+./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 read-list
 
-### 3. 加载驱动
-```sh
-sudo modprobe bq40z50_fg.ko
-```
+# 查看可操作的开关
+./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 read-list
+````
 
-### 4. 卸载驱动
-```sh
-sudo rmmod bq40z50_fg
+### 3. 在正常模式下无法打开电池充放电功能时，启用测试模式
+
+```bash
+# 关闭自动控制
+./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerBlockAccess.FETControl
+
+# 打开充电模式
+./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerAccess.ChargeFET
+
+# 打开放电模式
+./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerAccess.DischargeFET
 ```
 
-## 设备树配置
-如果你的系统使用设备树，请将 `bq40z50-overlay.dts` 编译为 `.dtbo` 并加载：
-
-```sh
-dtc -@ -I dts -O dtb -o bq40z50-overlay.dtbo bq40z50-overlay.dts
-sudo cp bq40z50-overlay.dtbo /boot/overlays/
-echo "dtoverlay=bq40z50-overlay" | sudo tee -a /boot/config.txt
-```
-
-## 测试
-运行测试脚本：
-```sh
-chmod +x test.sh
-./test.sh
-```
+> 根据谢总描述，之前无法正常打开的充放电模式后来可以使用了。
+> 若再次无法使用，可参考 [测试模式](#3-在正常模式下无法打开电池充放电功能时启用测试模式)。
