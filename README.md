@@ -2,6 +2,8 @@
 
 > **注意**：由于 Linux 驱动可能稳定性不足，驱动程序的操作方法请参考 [这里](./README-old.md)，可以选择使用这里的python程序。
 
+**如果要使用 python ，需要卸载bq40z50的驱动，将  树莓派中，将 /boot/config.txt 中的 dtoverlay=bq40z50-overlay 注释或删除**
+
 ## 一、使用 Python 程序读取或控制 bq40z50 状态
 
 ### 1. 将 `bq40z50` 文件夹复制到 `rpicm5`
