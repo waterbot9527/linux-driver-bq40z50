@@ -8,26 +8,28 @@
 
 ### 1. 将 `bq40z50` 文件夹复制到 `rpicm5`
 
+请根据具体使用到的i2c修改指定的index是0或者其他: "smbus:0"
+
 ### 2. 常用指令示例
 ```bash
 # 查看可读取的状态
-./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 read-list
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read-list
 
 # 查看可操作的开关
-./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 read-list
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read-list
 ````
 
 ### 3. 在正常模式下无法打开电池充放电功能时，启用测试模式
 
 ```bash
 # 关闭自动控制
-./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerBlockAccess.FETControl
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerBlockAccess.FETControl
 
 # 打开充电模式
-./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerAccess.ChargeFET
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerAccess.ChargeFET
 
 # 打开放电模式
-./comm_sbs_bqctrl.py -v --bus "smbus:1" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerAccess.DischargeFET
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 trigger ManufacturerAccess.DischargeFET
 ```
 
 > 根据谢总描述，之前无法正常打开的充放电模式后来可以使用了。
