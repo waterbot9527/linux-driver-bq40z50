@@ -16,10 +16,20 @@
 ./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read-list
 
 # 查看可操作的开关
-./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read-list
-````
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 trigger-list
+```
+### 3. 电池参数读取
+```bash
+# 显示电量百分比
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read RemainingCapacity
+# 显示电压
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read Votage
+# 显示电流
+./comm_sbs_bqctrl.py -v --bus "smbus:0" --dev_address 0x0b --chip BQ40z50 read Current
+```
+**读取其他的参数根据此文件中的描述：comm_sbs_bqctrl.py**
 
-### 3. 在正常模式下无法打开电池充放电功能时，启用测试模式
+### 4. 在正常模式下无法打开电池充放电功能时，启用测试模式
 
 ```bash
 # 关闭自动控制
